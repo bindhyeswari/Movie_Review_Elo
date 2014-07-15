@@ -8,6 +8,7 @@
   "dependencies": {
     "express": "3.5.2",
     "ejs": "*",
-    "elo-rank":"0.2.2"
+    "elo-rank":"0.2.2",
+    "cheerio":"0.17.0"
   }
 }

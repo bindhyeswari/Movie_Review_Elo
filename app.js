@@ -8,6 +8,7 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var fs = require('fs');
 
 var app = express();
 
@@ -59,6 +60,42 @@ app.get('/review', function (req, res) {
     });
 });
 
+var cheerio = require('cheerio');
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
+
+    var books = [];
+
+
+    http.get('',
+        function (res) {
+            var str;
+            res
+            .on('data', function(chunk){
+                str += chunk;
+            }).on('end', function(){
+
+                    var $ = cheerio.load(str);
+                    var img_urls = [];
+                    var titles = [];
+                    $('img.productImage').each(function () {
+                        img_urls.push($(this).attr('src'));
+                    });
+                    console.log(img_urls.length);
+                    $('h3.newaps').each(function () {
+                        titles.push($(this).text().replace('\n','').trim());
+                    });
+                    console.log(titles.length);
+                    var data = titles.map(function(title, index){
+                        return {
+                            title: title,
+                            src: img_urls[index]
+                        }
+                    });
+                    console.log(data);
+                    fs.writeFileSync(__dirname + '/books.json', JSON.stringify(data));
+            });
+        });
+
 });
