@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.forms[0];
+            var imgs = document.getElementsByTagName('img');
+            for (var i = 0, len = imgs.length; i < len; i++) {
+                imgs[i].addEventListener('click', function (event) {
+                   if (event.target.id === 'img1') {
+                       form.win.value = 1;
+                   } else {
+                       form.win.value = 0;
+                   }
+
+                    form.submit();
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+<img src="<%= book1.src %>" alt="" id="img1" data-isbn="<%= book1.isbn %>"/>
+<img src="<%= book2.src %>" alt="" id="img2" data-isbn="<%= book2.isbn %>"/>
+
+<form action="/review">
+    <input type="text" name="isbn1" value="<%= book1.isbn %>"/>
+    <input type="text" name="isbn2" value="<%= book2.isbn %>"/>
+    <input type="text" name="win" value="1"/>
+    <input type="submit"/>
+</form>
+</body>
+</html>
